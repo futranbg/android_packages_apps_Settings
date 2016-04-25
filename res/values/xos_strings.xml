@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2015 BrokenROM
+<!-- Copyright (C) 2015 xOS
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -55,9 +55,9 @@
     <string name="trigger_bottom_summary">Adjust the height of the trigger area</string>
 
     <!-- TekOS General -->
-    <string name="aaahh_settings_title" product="default">TekOS Settings</string>
-    <string name="tekos_version" product="default">TekOS Version</string>
-    <string name="tekos_version_default">Unknown</string>
+    <string name="aaahh_settings_title" product="default">xOS Settings</string>
+    <string name="xos_version" product="default">xOS Version</string>
+    <string name="xos_version_default">Unknown</string>
 
     <!-- Blur Strings -->
     <string name="hook_system_ui_blurred_status_bar_expanded_enabled_pref">Blur Status Bar Background</string>

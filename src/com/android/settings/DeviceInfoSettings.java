@@ -86,7 +86,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
     private static final String KEY_DEVICE_FEEDBACK = "device_feedback";
     private static final String KEY_SAFETY_LEGAL = "safetylegal";
     private static final String KEY_MOD_VERSION = "mod_version";
-    private static final String KEY_TEKOS_VERSION = "tekos_version";
+    private static final String KEY_XOS_VERSION = "xos_version";
     private static final String KEY_MOD_BUILD_DATE = "build_date";
 
     static final int TAPS_TO_BE_A_DEVELOPER = 7;
@@ -135,8 +135,8 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
         findPreference(KEY_BUILD_NUMBER).setEnabled(true);
         findPreference(KEY_KERNEL_VERSION).setSummary(getFormattedKernelVersion());
         setValueSummary(KEY_MOD_BUILD_DATE, "ro.build.date");
-        setValueSummary(KEY_TEKOS_VERSION, "ro.tekos.version");
-        findPreference(KEY_TEKOS_VERSION).setEnabled(true);
+        setValueSummary(KEY_XOS_VERSION, "ro.xos.version");
+        findPreference(KEY_XOS_VERSION).setEnabled(true);
         findPreference(KEY_MOD_BUILD_DATE).setEnabled(true);
 
         if (!SELinux.isSELinuxEnabled()) {

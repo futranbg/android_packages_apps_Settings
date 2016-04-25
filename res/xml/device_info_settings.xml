@@ -74,11 +74,11 @@
                 android:title="@string/firmware_version"
                 android:summary="@string/device_info_default"/>
 
-        <!-- TekOS version -->
-        <Preference android:key="tekos_version"
+        <!-- xOS version -->
+        <Preference android:key="xos_version"
                 style="?android:preferenceInformationStyle"
-                android:title="@string/tekos_version"
-                android:summary="@string/tekos_version_default" />
+                android:title="@string/xos_version"
+                android:summary="@string/xos_version_default" />
 
         <!-- Security patch level -->
         <Preference android:key="security_patch"
