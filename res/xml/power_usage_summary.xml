@@ -31,6 +31,12 @@
             android:summary="@string/autoperf_summary"
             android:defaultValue="true" />
 
+	  <SwitchPreference
+        android:key="status_bar_show_battery_percent"
+        android:title="@string/status_bar_battery_percentage_title"
+	android:summary="@string/status_bar_battery_percentage_summary"
+	android:defaultValue="false"/>
+
         <com.android.settings.fuelgauge.BatteryHistoryPreference
             android:key="battery_history" />
 
