@@ -163,7 +163,7 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
                 @Override
                 public void onChange(boolean selfChange, Uri uri) {
                     loadInstalledServices();
-                    updateServicesPreferences();
+                    updateAllPreferences();
                 }
             };
 
