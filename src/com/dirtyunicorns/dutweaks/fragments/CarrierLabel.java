@@ -26,7 +26,7 @@ import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.UserHandle;
-import android.preference.ListPreference;
+import android.preference.SwitchPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceCategory;
@@ -56,7 +56,7 @@ public class CarrierLabel extends SettingsPreferenceFragment implements OnPrefer
 
     private PreferenceScreen mCustomCarrierLabel;
 
-    private ListPreference mShowCarrierLabel;
+    private SwitchPreference mShowCarrierLabel;
     private String mCustomCarrierLabelText;
 
     @Override
@@ -72,11 +72,9 @@ public class CarrierLabel extends SettingsPreferenceFragment implements OnPrefer
         String hexColor;
 
         mShowCarrierLabel =
-                (ListPreference) findPreference(SHOW_CARRIER_LABEL);
-        int showCarrierLabel = Settings.System.getIntForUser(resolver,
-                Settings.System.STATUS_BAR_SHOW_CARRIER, 1, UserHandle.USER_CURRENT);
-        mShowCarrierLabel.setValue(String.valueOf(showCarrierLabel));
-        mShowCarrierLabel.setSummary(mShowCarrierLabel.getEntry());
+                (SwitchPreference) findPreference(SHOW_CARRIER_LABEL);
+        mShowCarrierLabel.setChecked(Settings.System.getInt(getContentResolver(),
+                Settings.System.STATUS_BAR_SHOW_CARRIER, 3) == 0);
         mShowCarrierLabel.setOnPreferenceChangeListener(this);
 
         if (!Utils.isVoiceCapable(getActivity())) {
@@ -112,14 +110,15 @@ public class CarrierLabel extends SettingsPreferenceFragment implements OnPrefer
     public boolean onPreferenceChange(Preference preference, Object newValue) {
 		ContentResolver resolver = getActivity().getContentResolver();
        if (preference == mShowCarrierLabel) {
-            int showCarrierLabel = Integer.valueOf((String) newValue);
-            int index = mShowCarrierLabel.findIndexOfValue((String) newValue);
-            Settings.System.putIntForUser(resolver, Settings.System.
-                STATUS_BAR_SHOW_CARRIER, showCarrierLabel, UserHandle.USER_CURRENT);
-            mShowCarrierLabel.setSummary(mShowCarrierLabel.getEntries()[index]);
+            handleStatusBarShowCarrier((Boolean) newValue);
             return true;
          }
          return false;
+    }
+
+    private void handleStatusBarShowCarrier(boolean checked) {
+            Settings.System.putIntForUser(getContentResolver(), Settings.System.
+                STATUS_BAR_SHOW_CARRIER, (checked ? 3 : 0), UserHandle.USER_CURRENT);
     }
 
     @Override
