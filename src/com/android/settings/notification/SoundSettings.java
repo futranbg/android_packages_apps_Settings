@@ -508,7 +508,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements Indexab
     private void updateVibrateWhenRinging() {
         if (mVibrateWhenRinging == null) return;
         mVibrateWhenRinging.setChecked(Settings.System.getInt(getContentResolver(),
-                Settings.System.VIBRATE_WHEN_RINGING, 0) != 0);
+                Settings.System.VIBRATE_WHEN_RINGING, 1) != 0);
     }
 
     private boolean isSecureNotificationsDisabled() {
