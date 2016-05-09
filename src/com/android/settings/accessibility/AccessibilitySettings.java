@@ -95,6 +95,8 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
             "daltonizer_preference_screen";
     private static final String BLUR_DISPLAY_PREFERENCE =
             "blur_system_preference";
+    private static final String QUICK_GESTURE_PREFERENCE_SCREEN =
+            "quick_gesture_preference_screen";
 
     // Extras passed to sub-fragments.
     static final String EXTRA_PREFERENCE_KEY = "preference_key";
@@ -180,6 +182,7 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
     private PreferenceScreen mDisplayMagnificationPreferenceScreen;
     private PreferenceScreen mGlobalGesturePreferenceScreen;
     private PreferenceScreen mDisplayDaltonizerPreferenceScreen;
+    private PreferenceScreen mQuickGesturePreferenceScreen;
     private SwitchPreference mToggleInversionPreference;
     private SwitchPreference mBlurDisplayPreference;
 
@@ -380,6 +383,10 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
         mDisplayDaltonizerPreferenceScreen = (PreferenceScreen) findPreference(
                 DISPLAY_DALTONIZER_PREFERENCE_SCREEN);
 
+        // Display Quick Gesture.
+        mQuickGesturePreferenceScreen = (PreferenceScreen) findPreference(
+                QUICK_GESTURE_PREFERENCE_SCREEN);
+
         // Global gesture.
         mGlobalGesturePreferenceScreen =
                 (PreferenceScreen) findPreference(ENABLE_ACCESSIBILITY_GESTURE_PREFERENCE_SCREEN);
@@ -544,6 +551,8 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
                 mDisplayMagnificationPreferenceScreen);
         updateFeatureSummary(Settings.Secure.ACCESSIBILITY_DISPLAY_DALTONIZER_ENABLED,
                 mDisplayDaltonizerPreferenceScreen);
+        updateFeatureSummary(Settings.System.GESTURE_ANYWHERE_ENABLED,
+                mQuickGesturePreferenceScreen);
 
         // Global gesture
         final boolean globalGestureEnabled = Settings.Global.getInt(getContentResolver(),

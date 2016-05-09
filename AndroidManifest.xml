@@ -2929,5 +2929,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".accessibility.GestureAnywhereBuilderActivity" />
+        <activity android:name=".accessibility.GestureAnywhereCreateGestureActivity" />
+
     </application>
 </manifest>

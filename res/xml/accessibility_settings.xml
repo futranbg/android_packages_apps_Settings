@@ -92,6 +92,10 @@
     <PreferenceCategory
         android:key="gesture_category"
         android:title="@string/accessibility_gesture_title" >
+        <PreferenceScreen
+            android:fragment="com.android.settings.accessibility.ToggleQuickGestureFragment"
+            android:key="quick_gesture_preference_screen"
+            android:title="@string/accessibility_quick_gesture_title"/>
     <com.android.settings.cyanogenmod.SystemSettingSwitchPreference
         android:key="three_finger_gesture"
         android:title="@string/three_finger_gesture"
