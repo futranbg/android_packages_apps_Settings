@@ -102,5 +102,18 @@
         android:summary="@string/three_finger_gesture_summary"
         android:defaultValue="false" />
     </PreferenceCategory>
-
+    <PreferenceCategory
+        android:key="motion_category"
+        android:title="@string/accessibility_motion_title" >
+        <!-- Shake to clean notification -->
+        <com.android.settings.cyanogenmod.SystemSettingSwitchPreference
+                android:key="shake_to_clean_notification"
+                android:title="@string/shake_to_clean_notification_title"
+		android:summary="@string/shake_to_clean_notification_summary" />
+        <!-- Shake to clean recents -->
+        <com.android.settings.cyanogenmod.SystemSettingSwitchPreference
+                android:key="shake_to_clean_recent"
+                android:title="@string/shake_to_clean_recent_title"
+		android:summary="@string/shake_to_clean_recent_summary" />
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -68,6 +68,13 @@
     <string name="three_finger_gesture">Screenshot gesture</string>
     <string name="three_finger_gesture_summary">Swipe three fingers anywhere to take screenshot</string>
 
+    <!-- Accessibility Motion -->
+    <string name="accessibility_motion_title">Motion</string>
+    <string name="shake_to_clean_notification_title">Shake to clear notifications</string>
+    <string name="shake_to_clean_notification_summary">In notification panel, shake your phone to clear all.</string>
+    <string name="shake_to_clean_recent_title">Shake to clear recent apps</string>
+    <string name="shake_to_clean_recent_title">In recent apps panel, shake your phone to clear all.</string>
+
     <!-- Screenshot sound -->
     <string name="screenshot_sound_title">Screenshot sound</string>
 
