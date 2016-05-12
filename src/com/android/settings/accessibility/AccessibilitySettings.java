@@ -551,7 +551,7 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
                 mDisplayMagnificationPreferenceScreen);
         updateFeatureSummary(Settings.Secure.ACCESSIBILITY_DISPLAY_DALTONIZER_ENABLED,
                 mDisplayDaltonizerPreferenceScreen);
-        updateFeatureSummary(Settings.System.GESTURE_ANYWHERE_ENABLED,
+        updateSystemFeatureSummary(Settings.System.GESTURE_ANYWHERE_ENABLED,
                 mQuickGesturePreferenceScreen);
 
         // Global gesture
@@ -568,6 +568,12 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
 
     private void updateFeatureSummary(String prefKey, Preference pref) {
         final boolean enabled = Settings.Secure.getInt(getContentResolver(), prefKey, 0) == 1;
+        pref.setSummary(enabled ? R.string.accessibility_feature_state_on
+                : R.string.accessibility_feature_state_off);
+    }
+
+    private void updateSystemFeatureSummary(String prefKey, Preference pref) {
+        final boolean enabled = Settings.System.getInt(getContentResolver(), prefKey, 0) == 1;
         pref.setSummary(enabled ? R.string.accessibility_feature_state_on
                 : R.string.accessibility_feature_state_off);
     }

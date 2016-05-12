@@ -74,7 +74,7 @@ public class CarrierLabel extends SettingsPreferenceFragment implements OnPrefer
         mShowCarrierLabel =
                 (SwitchPreference) findPreference(SHOW_CARRIER_LABEL);
         mShowCarrierLabel.setChecked(Settings.System.getInt(getContentResolver(),
-                Settings.System.STATUS_BAR_SHOW_CARRIER, 3) == 0);
+                Settings.System.STATUS_BAR_SHOW_CARRIER, 3) == 3);
         mShowCarrierLabel.setOnPreferenceChangeListener(this);
 
         if (!Utils.isVoiceCapable(getActivity())) {

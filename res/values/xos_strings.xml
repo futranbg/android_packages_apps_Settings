@@ -73,7 +73,7 @@
     <string name="shake_to_clean_notification_title">Shake to clear notifications</string>
     <string name="shake_to_clean_notification_summary">In notification panel, shake your phone to clear all.</string>
     <string name="shake_to_clean_recent_title">Shake to clear recent apps</string>
-    <string name="shake_to_clean_recent_title">In recent apps panel, shake your phone to clear all.</string>
+    <string name="shake_to_clean_recent_summary">In recent apps panel, shake your phone to clear all.</string>
 
     <!-- Screenshot sound -->
     <string name="screenshot_sound_title">Screenshot sound</string>
