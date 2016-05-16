@@ -91,7 +91,7 @@ public class StatusBarSettings extends SettingsPreferenceFragment
         }
 
         int quickPulldown = CMSettings.System.getInt(resolver,
-                CMSettings.System.STATUS_BAR_QUICK_QS_PULLDOWN, 1);
+                CMSettings.System.STATUS_BAR_QUICK_QS_PULLDOWN, 3);
         mQuickPulldown.setValue(String.valueOf(quickPulldown));
         updatePulldownSummary(quickPulldown);
         mQuickPulldown.setOnPreferenceChangeListener(this);
@@ -147,7 +147,7 @@ public class StatusBarSettings extends SettingsPreferenceFragment
 
     private void handleTrafficMonitorState(boolean checked) {
         Settings.System.putInt(getContentResolver(),
-                Settings.System.NETWORK_TRAFFIC_STATE, (checked ? 3 : 0));
+                Settings.System.NETWORK_TRAFFIC_STATE, (checked ? 2 : 0));
     }
 
     private void updatePulldownSummary(int value) {
