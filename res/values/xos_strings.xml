@@ -67,6 +67,8 @@
     <string name="accessibility_gesture_title">Gesture</string>
     <string name="three_finger_gesture">Screenshot gesture</string>
     <string name="three_finger_gesture_summary">Swipe three fingers anywhere to take screenshot</string>
+    <string name="gesture_anywhere_floating">Floating Windows</string>
+    <string name="gesture_anywhere_floating_summary">Open application under floating windows</string>
 
     <!-- Accessibility Motion -->
     <string name="accessibility_motion_title">Motion</string>
