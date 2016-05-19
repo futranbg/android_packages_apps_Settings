@@ -254,10 +254,6 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
         Settings.System.putInt(
                 getContentResolver(), Settings.System.TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY, (checked ? 1 : 0));
         Settings.System.putInt(
-                getContentResolver(), Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, (checked ? 1 : 0));
-        Settings.System.putInt(
-                getContentResolver(), Settings.System.TRANSLUCENT_QUICK_SETTINGS_PREFERENCE_KEY, (checked ? 1 : 0));
-        Settings.System.putInt(
                 getContentResolver(), Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, (checked ? 1 : 0));
 	getContext().sendBroadcast(i);
     }
@@ -527,9 +523,9 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
         mBlurDisplayPreference.setChecked(Settings.System.getInt(getContentResolver(),
                 Settings.System.TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY, 1) == 1);
         mBlurDisplayPreference.setChecked(Settings.System.getInt(getContentResolver(),
-                Settings.System.TRANSLUCENT_QUICK_SETTINGS_PREFERENCE_KEY, 1) == 1);
+                Settings.System.TRANSLUCENT_QUICK_SETTINGS_PREFERENCE_KEY, 0) == 1);
         mBlurDisplayPreference.setChecked(Settings.System.getInt(getContentResolver(),
-                Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 1) == 1);
+                Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 0) == 1);
         mBlurDisplayPreference.setChecked(Settings.System.getInt(getContentResolver(),
                 Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, 1) == 1);
 

@@ -59,6 +59,9 @@
     <string name="lock_screen_show_current">Charging Current</string>
     <string name="lock_screen_show_current_summary">Show Charging Current rate on lock screen</string>
 
+    <!-- Virtual assistant -->
+    <string name="vav_settings_title">Vietnamese Virtual Assistant</string>
+
     <!-- Blur system -->
     <string name="blur_system_title">Blur display</string>
     <string name="blur_system_summary">Display blur over system, may reduce performance</string>
