@@ -59,12 +59,6 @@
         android:summary="@string/status_bar_notif_count_summary"
         android:defaultValue="false" />
 
-    <ListPreference
-        android:key="qs_quick_pulldown"
-        android:title="@string/status_bar_quick_qs_pulldown_title"
-        android:entries="@array/status_bar_quick_qs_pulldown_entries"
-        android:entryValues="@array/status_bar_quick_qs_pulldown_values" />
-
     <SwitchPreference
         android:key="network_traffic_state"
         android:title="@string/network_traffic_title"

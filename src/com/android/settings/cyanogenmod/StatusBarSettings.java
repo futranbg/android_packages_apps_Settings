@@ -51,12 +51,10 @@ public class StatusBarSettings extends SettingsPreferenceFragment
 
     private static final String STATUS_BAR_CLOCK_STYLE = "status_bar_clock";
     private static final String STATUS_BAR_AM_PM = "status_bar_am_pm";
-    private static final String STATUS_BAR_QUICK_QS_PULLDOWN = "qs_quick_pulldown";
     private static final String NETWORK_TRAFFIC_MONITOR = "network_traffic_state";
 
     private ListPreference mStatusBarClock;
     private ListPreference mStatusBarAmPm;
-    private ListPreference mQuickPulldown;
     private SwitchPreference mTrafficState;
 
     @Override
@@ -89,12 +87,6 @@ public class StatusBarSettings extends SettingsPreferenceFragment
             mStatusBarAmPm.setSummary(mStatusBarAmPm.getEntry());
             mStatusBarAmPm.setOnPreferenceChangeListener(this);
         }
-
-        int quickPulldown = CMSettings.System.getInt(resolver,
-                CMSettings.System.STATUS_BAR_QUICK_QS_PULLDOWN, 3);
-        mQuickPulldown.setValue(String.valueOf(quickPulldown));
-        updatePulldownSummary(quickPulldown);
-        mQuickPulldown.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -132,12 +124,6 @@ public class StatusBarSettings extends SettingsPreferenceFragment
                     resolver, CMSettings.System.STATUS_BAR_AM_PM, statusBarAmPm);
             mStatusBarAmPm.setSummary(mStatusBarAmPm.getEntries()[index]);
             return true;
-        } else if (preference == mQuickPulldown) {
-            int quickPulldown = Integer.valueOf((String) newValue);
-            CMSettings.System.putInt(
-                    resolver, CMSettings.System.STATUS_BAR_QUICK_QS_PULLDOWN, quickPulldown);
-            updatePulldownSummary(quickPulldown);
-            return true;
         } else if (preference == mTrafficState) {
             handleTrafficMonitorState((Boolean) newValue);
             return true;
@@ -148,20 +134,6 @@ public class StatusBarSettings extends SettingsPreferenceFragment
     private void handleTrafficMonitorState(boolean checked) {
         Settings.System.putInt(getContentResolver(),
                 Settings.System.NETWORK_TRAFFIC_STATE, (checked ? 2 : 0));
-    }
-
-    private void updatePulldownSummary(int value) {
-        Resources res = getResources();
-
-        if (value == 0) {
-            // quick pulldown deactivated
-            mQuickPulldown.setSummary(res.getString(R.string.status_bar_quick_qs_pulldown_off));
-        } else {
-            String direction = res.getString(value == 2
-                    ? R.string.status_bar_quick_qs_pulldown_summary_left
-                    : R.string.status_bar_quick_qs_pulldown_summary_right);
-            mQuickPulldown.setSummary(res.getString(R.string.status_bar_quick_qs_pulldown_summary, direction));
-        }
     }
 
     public static final Indexable.SearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
