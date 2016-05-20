@@ -66,7 +66,6 @@ public class StatusBarSettings extends SettingsPreferenceFragment
 
         mStatusBarClock = (ListPreference) findPreference(STATUS_BAR_CLOCK_STYLE);
         mStatusBarAmPm = (ListPreference) findPreference(STATUS_BAR_AM_PM);
-        mQuickPulldown = (ListPreference) findPreference(STATUS_BAR_QUICK_QS_PULLDOWN);
 
         mTrafficState = (SwitchPreference) findPreference(NETWORK_TRAFFIC_MONITOR);
         mTrafficState.setOnPreferenceChangeListener(this);
