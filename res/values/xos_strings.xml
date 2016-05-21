@@ -80,6 +80,10 @@
     <string name="shake_to_clean_recent_title">Shake to clear recent apps</string>
     <string name="shake_to_clean_recent_summary">In recent apps panel, shake your phone to clear all.</string>
 
+    <!-- Low power mode -->
+    <string name="low_power_mode_title">Low power mode</string>
+    <string name="low_power_mode_summary">EXPERIMENTAL: This feature is partially working and need more update to become stable.</string>
+
     <!-- Screenshot sound -->
     <string name="screenshot_sound_title">Screenshot sound</string>
 

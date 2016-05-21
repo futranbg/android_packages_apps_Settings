@@ -26,6 +26,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.IBinder;
+import android.os.Parcel;
 import android.os.BatteryManager;
 import android.os.BatteryStats;
 import android.os.Build;
@@ -34,7 +37,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.Process;
+import android.os.RemoteException;
 import android.os.UserHandle;
+import android.os.ServiceManager;
+import android.os.SystemProperties;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
@@ -42,6 +48,7 @@ import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -86,6 +93,8 @@ public class PowerUsageSummary extends PowerUsageBase
     private static final String KEY_PERF_PROFILE = "pref_perf_profile";
     private static final String KEY_PER_APP_PROFILES = "app_perf_profiles_enabled";
     private static final String STATUS_BAR_SHOW_BATTERY_PERCENT = "status_bar_show_battery_percent";
+    private static final String DOZE_POWERSAVE_PROPERTY = "persist.sys.doze_powersave";
+    private static final String DOZE_POWERSAVE_KEY = "low_power_mode";
 
     private static final String KEY_BATTERY_SAVER = "low_power";
 
@@ -95,17 +104,23 @@ public class PowerUsageSummary extends PowerUsageBase
     private static final int MENU_HIGH_POWER_APPS = Menu.FIRST + 4;
     private static final int MENU_HELP = Menu.FIRST + 5;
 
+    private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
+    private final ArrayList<SwitchPreference> mResetSwitchPrefs  = new ArrayList<SwitchPreference>();
+
     private BatteryHistoryPreference mHistPref;
     private PreferenceGroup mAppListGroup;
     private ListPreference mPerfProfilePref;
     private SwitchPreference mPerAppProfiles;
     private SwitchPreference mBatterySaverPref;
     private SwitchPreference mStatusBarBatteryShowPercent;
+    private SwitchPreference mDozePowersave;
 
     private String[] mPerfProfileEntries;
     private String[] mPerfProfileValues;
     private PerformanceProfileObserver mPerformanceProfileObserver = null;
     private int mNumPerfProfiles = 0;
+    private boolean mDontPokeProperties;
+
 
     private boolean mBatteryPluggedIn;
 
@@ -143,6 +158,9 @@ public class PowerUsageSummary extends PowerUsageBase
         mBatterySaverPref = (SwitchPreference) findPreference(KEY_BATTERY_SAVER);
         mStatusBarBatteryShowPercent = (SwitchPreference) findPreference(STATUS_BAR_SHOW_BATTERY_PERCENT);
         mStatusBarBatteryShowPercent.setOnPreferenceChangeListener(this);
+
+        mDozePowersave = (SwitchPreference) findPreference(DOZE_POWERSAVE_KEY);
+        updateDozePowersaveOptions();
 
         mNumPerfProfiles = mPerf.getNumberOfProfiles();
         mPerfProfilePref = (ListPreference) findPreference(KEY_PERF_PROFILE);
@@ -232,7 +250,12 @@ public class PowerUsageSummary extends PowerUsageBase
         BatteryEntry entry = pgp.getInfo();
         PowerUsageDetail.startBatteryDetailPage((SettingsActivity) getActivity(), mStatsHelper,
                 mStatsType, entry, true);
+	if (preference == mDozePowersave) {
+            writeDozePowersaveOptions();
+	} else {
         return super.onPreferenceTreeClick(preferenceScreen, preference);
+	}
+	return false;
     }
 
     @Override
@@ -350,6 +373,10 @@ public class PowerUsageSummary extends PowerUsageBase
         mAppListGroup.addPreference(notAvailable);
     }
 
+    private void updateDozePowersaveOptions() {
+        updateSwitchPreference(mDozePowersave, SystemProperties.getBoolean(DOZE_POWERSAVE_PROPERTY, false));
+    }
+
     private void resetStats() {
         AlertDialog dialog = new AlertDialog.Builder(getActivity())
             .setTitle(R.string.menu_stats_reset)
@@ -380,6 +407,11 @@ public class PowerUsageSummary extends PowerUsageBase
 
     private static boolean isSharedGid(int uid) {
         return UserHandle.getAppIdFromSharedAppGid(uid) > 0;
+    }
+
+    private void writeDozePowersaveOptions() {
+        SystemProperties.set(DOZE_POWERSAVE_PROPERTY, mDozePowersave.isChecked() ? "true" : "false");
+        pokeSystemProperties();
     }
 
     private static boolean isSystemUid(int uid) {
@@ -611,6 +643,13 @@ public class PowerUsageSummary extends PowerUsageBase
         BatteryEntry.startRequestQueue();
     }
 
+    void pokeSystemProperties() {
+        if (mDontPokeProperties) {
+            //noinspection unchecked
+            (new SystemPropPoker()).execute();
+        }
+    }
+
     private static List<BatterySipper> getFakeStats() {
         ArrayList<BatterySipper> stats = new ArrayList<>();
         float use = 5;
@@ -671,5 +710,36 @@ public class PowerUsageSummary extends PowerUsageBase
             super.handleMessage(msg);
         }
     };
+
+    static class SystemPropPoker extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            String[] services;
+            try {
+                services = ServiceManager.listServices();
+            } catch (RemoteException e) {
+                return null;
+            }
+            for (String service : services) {
+                IBinder obj = ServiceManager.checkService(service);
+                if (obj != null) {
+                    Parcel data = Parcel.obtain();
+                    try {
+                        obj.transact(IBinder.SYSPROPS_TRANSACTION, data, null, 0);
+                    } catch (RemoteException e) {
+                    } catch (Exception e) {
+                        Log.i(TAG, "Someone wrote a bad service '" + service
+                                + "' that doesn't like to be poked: " + e);
+                    }
+                    data.recycle();
+                }
+            }
+            return null;
+        }
+    }
+    void updateSwitchPreference(SwitchPreference switchPreference, boolean value) {
+        switchPreference.setChecked(value);
+    }
+
 }
 

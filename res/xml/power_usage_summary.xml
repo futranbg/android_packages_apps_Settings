@@ -30,6 +30,10 @@
             android:title="@string/autoperf_title"
             android:summary="@string/autoperf_summary"
             android:defaultValue="true" />
+    <SwitchPreference
+        android:key="low_power_mode"
+        android:title="@string/low_power_mode_title"
+        android:summary="@string/low_power_mode_summary" />
 
 	  <SwitchPreference
         android:key="status_bar_show_battery_percent"
