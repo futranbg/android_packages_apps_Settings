@@ -199,7 +199,7 @@
                 android:id="@+id/vav_settings"
                 android:title="@string/vav_settings_title"
                 android:icon="@drawable/ic_settings_vav" 
-		android:fragment="uet.mdnteam.vav.main.activities.GeneralSettingActivity">
+		android:fragment="uet.mdnteam.vav.main.activities.SettingActivity">
         </dashboard-tile>
 
         <!-- Home -->
