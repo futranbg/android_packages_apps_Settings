@@ -194,13 +194,13 @@
             </intent>
         </dashboard-tile>
 
-        <!-- Virtual Assistant -->
+        <!-- Virtual Assistant
         <dashboard-tile
                 android:id="@+id/vav_settings"
                 android:title="@string/vav_settings_title"
                 android:icon="@drawable/ic_settings_vav" 
 		android:fragment="uet.mdnteam.vav.main.activities.SettingActivity">
-        </dashboard-tile>
+        </dashboard-tile> !-->
 
         <!-- Home -->
         <dashboard-tile

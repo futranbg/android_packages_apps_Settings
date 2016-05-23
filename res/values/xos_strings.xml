@@ -89,6 +89,7 @@
 
     <!-- Wallpaper settings -->
     <string name="wallpaper_settings">Wallpaper</string>
+    <string name="sponsor_title">Sponsor</string>
     <string name="lockscreen_wallpaper_settings_title">Lockscreen wallpaper</string>
     <string name="keywords_display_lockscreen_wallpaper">lockscreen wallpaper changing</string>
     <string name="lockscreen_wallpaper_set_title">Lockscreen wallpaper set</string>

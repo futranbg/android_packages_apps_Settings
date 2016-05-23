@@ -18,6 +18,12 @@
         android:title="@string/about_settings">
 
         <!-- Device status - launches activity -->
+	<PreferenceScreen
+            android:key="sponsor"
+            android:fragment="com.android.settings.xos.sponsor"
+            android:title="@string/sponsor_title"
+            />
+
         <PreferenceScreen android:key="status_info"
                 android:title="@string/device_status"
                 android:summary="@string/device_status_summary">
