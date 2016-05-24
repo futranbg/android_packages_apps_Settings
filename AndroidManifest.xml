@@ -300,8 +300,6 @@
                 android:value="true" />
         </activity>
 
-        <activity android:name=".deviceinfo.Sponsor" />
-
         <activity android:name=".wifi.WifiInfo"
                 android:theme="@style/Theme.SubSettingsDialogWhenLarge"
                 android:taskAffinity="com.android.settings"
@@ -2925,7 +2923,7 @@
         </activity>
 
         <activity android:name=".accessibility.GestureAnywhereBuilderActivity" />
-        <activity android:name=".GestureAnywhereCreateGestureActivity.accessibility" />
+        <activity android:name=".accessibility.GestureAnywhereCreateGestureActivity" />
 		
     </application>
 </manifest>
