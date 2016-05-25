@@ -1039,4 +1039,9 @@
   <string name="restrict_cellular_access_dialog_summary">Tính năng này có thể khiến một ứng dụng phụ thuộc vào việc truy cập mạng ngừng hoạt động khi chỉ sẵn có mạng di động.\n\nBạn có thể tìm thấy các quyền kiểm soát sử dụng dữ liệu thích hợp hơn trong các cài đặt sẵn có trong ứng dụng.</string>
   <!-- Label for settings shortcut: carrier selection -->
   <string name="shortcut_carrier_title">Nhà điều hành mạng</string>
+
+  <!-- LockScreen Blur and see through -->
+    <string name="lockscreen_see_through_title">Làm mờ màn hình khóa</string>
+    <string name="lockscreen_see_through_summary">Làm mờ và hiển thị nội dung bên duới màn hình khóa của bạn. Dữ liệu của bạn có thể đựoc nhìn thấy bởi những nguời xung quanh</string>
+
 </resources>

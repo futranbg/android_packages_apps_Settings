@@ -2904,4 +2904,17 @@
     <string name="color_temperature" msgid="2070126836910615605">"Nhiệt độ màu lạnh"</string>
     <string name="color_temperature_desc" msgid="4793729830226404052">"Sử dụng màu hiển thị lạnh hơn"</string>
     <string name="color_temperature_toast" msgid="4974218172133854827">"Để áp dụng thay đổi màu, hãy tắt màn hình"</string>
+    
+  <!-- Carrier Label -->
+    <string name="carrier_options">Tên nhà mạng</string>
+    <string name="custom_carrier_label_title">Tùy chỉnh tên nhà mạng</string>
+    <string name="custom_carrier_label_explain">Vui lòng nhập tên mới. Bỏ trống để quay về tên mặc định.</string>
+    <string name="custom_carrier_label_notset">Tên tùy chỉnh chưa đựoc đặt</string>
+    <string name="status_bar_carrier_color">Màu tên nhà mạng</string>
+    <string name="show_carrier_title">Tên nhà mạng</string>
+    <string name="show_carrier_disabled">Tắt</string>
+    <string name="show_carrier_keyguard">Khóa tên nhà mạng</string>
+    <string name="show_carrier_statusbar">Tên nhà mạng thanh trạng thái</string>
+    <string name="show_carrier_enabled">Bật</string>
+
 </resources>
