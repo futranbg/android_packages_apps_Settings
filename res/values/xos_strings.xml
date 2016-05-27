@@ -146,4 +146,9 @@
 	<string name="ga_gestures_rename_label">Gesture name</string>
 	<!-- Message, displayed when the sdcard cannot be found, 1st parameter is the name of the file that stores the gestures.  CHAR LIMIT=80 -->
 	<string name="ga_gestures_error_loading">Could not load %s. Make sure you have storage available.</string>
+
+        <!-- UI debug setting: show CPU info? [CHAR LIMIT=25] -->
+        <string name="show_cpu_info">Show CPU info</string>
+        <!-- UI debug setting: show cpu usage summary [CHAR LIMIT=50] -->
+        <string name="show_cpu_info_summary">Screen overlay showing current CPU info</string>
 </resources>

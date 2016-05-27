@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
  * Copyright (C) 2013-2014 The CyanogenMod Project
+ * Copyright (C) 2016 The xOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -169,6 +170,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final String MOBILE_DATA_ALWAYS_ON = "mobile_data_always_on";
     private static final String KEY_COLOR_MODE = "color_mode";
     private static final String COLOR_TEMPERATURE_KEY = "color_temperature";
+    private static final String SHOW_CPU_INFO_KEY = "show_cpu_info";
 
     private static final String INACTIVE_APPS_KEY = "inactive_apps";
 
@@ -247,6 +249,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private SwitchPreference mWifiAggressiveHandover;
     private SwitchPreference mLegacyDhcpClient;
     private SwitchPreference mMobileDataAlwaysOn;
+    private SwitchPreference mShowCpuInfo;
 
     private SwitchPreference mWifiAllowScansWithTraffic;
     private SwitchPreference mStrictMode;
@@ -408,6 +411,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             }
         }
         mStrictMode = findAndInitSwitchPref(STRICT_MODE_KEY);
+	mShowCpuInfo = findAndInitSwitchPref(SHOW_CPU_INFO_KEY);
         mPointerLocation = findAndInitSwitchPref(POINTER_LOCATION_KEY);
         mShowTouches = findAndInitSwitchPref(SHOW_TOUCHES_KEY);
         mShowScreenUpdates = findAndInitSwitchPref(SHOW_SCREEN_UPDATES_KEY);
@@ -704,6 +708,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateMsaaOptions();
         updateTrackFrameTimeOptions();
         updateShowNonRectClipOptions();
+	updateCpuInfoOptions();
         updateShowHwScreenUpdatesOptions();
         updateShowHwLayersUpdatesOptions();
         updateDebugHwOverdrawOptions();
@@ -1627,6 +1632,24 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         }
     }
 
+    private void updateCpuInfoOptions() {
+        updateSwitchPreference(mShowCpuInfo, Settings.Global.getInt(getActivity().getContentResolver(),
+                Settings.Global.SHOW_CPU, 0) != 0);
+    }
+
+    private void writeCpuInfoOptions() {
+        boolean value = mShowCpuInfo.isChecked();
+        Settings.Global.putInt(getActivity().getContentResolver(),
+                Settings.Global.SHOW_CPU, value ? 1 : 0);
+        Intent service = (new Intent())
+                .setClassName("com.android.systemui", "com.android.systemui.CPUInfoService");
+        if (value) {
+            getActivity().startService(service);
+        } else {
+            getActivity().stopService(service);
+        }
+    }
+
     private void writeImmediatelyDestroyActivitiesOptions() {
         try {
             ActivityManagerNative.getDefault().setAlwaysFinish(
@@ -2000,6 +2023,8 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             }
         } else if (preference == mShowCpuUsage) {
             writeCpuUsageOptions();
+        } else if (preference == mShowCpuInfo) {
+            writeCpuInfoOptions();
         } else if (preference == mImmediatelyDestroyActivities) {
             writeImmediatelyDestroyActivitiesOptions();
         } else if (preference == mShowAllANRs) {
