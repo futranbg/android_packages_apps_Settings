@@ -93,26 +93,18 @@
         </dashboard-tile>
     </dashboard-category>
 
-    <!-- DEVICE -->
+    <!-- SOUND & NOTIFICATIONS -->
     <dashboard-category
-            android:id="@+id/device_section"
+            android:id="@+id/sound_notifications_section"
             android:key="@string/category_key_device"
-            android:title="@string/header_category_device" >
+            android:title="@string/header_category_sound" >
 
-        <!-- Sound -->
+        <!-- Sound & Vibrations -->
         <dashboard-tile
                 android:id="@+id/sound_settings"
                 android:title="@string/category_sounds"
                 android:fragment="com.android.settings.notification.SoundSettings"
                 android:icon="@drawable/ic_settings_sounds"
-                />
-
-        <!-- Display & lights -->
-        <dashboard-tile
-                android:id="@+id/display_and_lights_settings"
-                android:title="@string/display_and_lights"
-                android:fragment="com.android.settings.DisplaySettings"
-                android:icon="@drawable/ic_settings_display"
                 />
 
         <!-- Notification manager -->
@@ -121,6 +113,38 @@
                 android:title="@string/notification_manager"
                 android:fragment="com.android.settings.notification.NotificationManagerSettings"
                 android:icon="@drawable/ic_settings_notifications"
+                />
+
+        <!-- Profiles -->
+        <dashboard-tile
+                android:id="@+id/profile_settings"
+                android:fragment="com.android.settings.profiles.ProfilesSettings"
+                android:title="@string/profiles_settings_title"
+                android:icon="@drawable/ic_settings_profiles"
+                />
+
+        <!-- Do not disturb -->
+        <dashboard-tile
+                android:id="@+id/zen_mode"
+                android:title="@string/zen_mode_settings_title"
+                android:fragment="com.android.settings.notification.ZenModeSettings"
+                android:icon="@drawable/ic_settings_notifications"
+                />
+
+    </dashboard-category>
+
+    <!-- DEVICE -->
+    <dashboard-category
+            android:id="@+id/device_section"
+            android:key="@string/category_key_device"
+            android:title="@string/header_category_device" >
+
+        <!-- Display & lights -->
+        <dashboard-tile
+                android:id="@+id/display_and_lights_settings"
+                android:title="@string/display_and_lights"
+                android:fragment="com.android.settings.DisplaySettings"
+                android:icon="@drawable/ic_settings_display"
                 />
 
         <!-- Lock screen -->
@@ -142,7 +166,7 @@
 
         <external-tiles />
 
-        <!-- Battery -->
+        <!-- Battery & Performance -->
         <dashboard-tile
                 android:id="@+id/battery_settings"
                 android:title="@string/power_usage_summary_title"
@@ -202,7 +226,7 @@
 		android:fragment="uet.mdnteam.vav.main.activities.SettingActivity">
         </dashboard-tile> !-->
 
-        <!-- Home -->
+        <!-- Home  -->
         <dashboard-tile
                 android:id="@+id/home_settings"
                 android:title="@string/home_settings"
@@ -216,14 +240,6 @@
                 android:title="@string/wallpaper_settings"
                 android:fragment="com.android.settings.WallpaperSettings"
                 android:icon="@drawable/ic_settings_wallpaper"
-                />
-
-        <!-- Profiles -->
-        <dashboard-tile
-                android:id="@+id/profile_settings"
-                android:fragment="com.android.settings.profiles.ProfilesSettings"
-                android:title="@string/profiles_settings_title"
-                android:icon="@drawable/ic_settings_profiles"
                 />
 
         <!-- Status bar -->

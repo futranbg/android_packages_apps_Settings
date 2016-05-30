@@ -25,13 +25,6 @@
             android:summaryOn="@string/summary_heads_up_enabled"
             android:summaryOff="@string/summary_heads_up_disabled" />
 
-    <!-- Zen Mode -->
-    <PreferenceScreen
-            android:key="zen_mode"
-            android:title="@string/zen_mode_settings_title"
-            settings:keywords="@string/keywords_sounds_and_notifications_interruptions"
-            android:fragment="com.android.settings.notification.ZenModeSettings" />
-
     <!-- When device is locked -->
     <com.android.settings.DropDownPreference
             android:key="lock_screen_notifications"
