@@ -1044,4 +1044,9 @@
     <string name="lockscreen_see_through_title">Làm mờ màn hình khóa</string>
     <string name="lockscreen_see_through_summary">Làm mờ và hiển thị nội dung bên duới màn hình khóa của bạn. Dữ liệu của bạn có thể đựoc nhìn thấy bởi những nguời xung quanh</string>
 
+  <!-- Per app controls for LP keyguard notifications -->
+  <string name="app_notification_show_on_keyguard_title">Hiển thị trên màn hình khóa</string>
+  <string name="app_notification_show_on_keyguard_summary">Hiển thị các thông báo từ ứng dụng này trên màn hình khóa</string>
+  <string name="app_notification_no_ongoing_on_keyguard_title">Tắt thông báo liên tục trên màn hình khóa</string>
+  <string name="app_notification_no_ongoing_on_keyguard_summary">Không bao giờ hiển thị các thông báo liên tục từ ứng dụng này trên màn hình khóa</string>
 </resources>
