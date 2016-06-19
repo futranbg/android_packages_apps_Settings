@@ -1043,7 +1043,9 @@
   <!-- LockScreen Blur and see through -->
     <string name="lockscreen_see_through_title">Làm mờ màn hình khóa</string>
     <string name="lockscreen_see_through_summary">Làm mờ và hiển thị nội dung bên duới màn hình khóa của bạn. Dữ liệu của bạn có thể đựoc nhìn thấy bởi những nguời xung quanh</string>
-
+  <!-- title for lock screen blur preference -->
+  <!-- title for lock screen weather preference -->
+  <string name="lockscreen_weather_enabled_title">Hiển thị thời tiết</string>
   <!-- Per app controls for LP keyguard notifications -->
   <string name="app_notification_show_on_keyguard_title">Hiển thị trên màn hình khóa</string>
   <string name="app_notification_show_on_keyguard_summary">Hiển thị các thông báo từ ứng dụng này trên màn hình khóa</string>
