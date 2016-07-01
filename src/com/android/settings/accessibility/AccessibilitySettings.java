@@ -95,6 +95,8 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
             "daltonizer_preference_screen";
     private static final String BLUR_DISPLAY_PREFERENCE =
             "blur_system_preference";
+    private static final String TRANSLUCTENT_DISPLAY_PREFERENCE =
+            "transluctent_system_preference";
     private static final String QUICK_GESTURE_PREFERENCE_SCREEN =
             "quick_gesture_preference_screen";
 
@@ -185,6 +187,7 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
     private PreferenceScreen mQuickGesturePreferenceScreen;
     private SwitchPreference mToggleInversionPreference;
     private SwitchPreference mBlurDisplayPreference;
+    private SwitchPreference mTransluctentDisplayPreference;
 
     private int mLongPressTimeoutDefault;
 
@@ -237,6 +240,9 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
         } else if (mBlurDisplayPreference == preference) {
             handleBlurDisplayPreferenceChange((Boolean) newValue);
             return true;
+        } else if (mTransluctentDisplayPreference == preference) {
+            handleTransluctentDisplayPreferenceChange((Boolean) newValue);
+            return true;
         }
         return false;
     }
@@ -247,14 +253,24 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
         mSelectLongPressTimeoutPreference.setSummary(
                 mLongPressTimeoutValuetoTitleMap.get(stringValue));
     }
+
     private void handleBlurDisplayPreferenceChange(boolean checked) {
 	Intent i = new Intent("serajr.blurred.system.ui.lp.UPDATE_PREFERENCES");
         Settings.System.putInt(
                 getContentResolver(), Settings.System.STATUS_BAR_EXPANDED_ENABLED_PREFERENCE_KEY, (checked ? 1 : 0));
         Settings.System.putInt(
+                getContentResolver(), Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, (checked ? 1 : 0));
+	getContext().sendBroadcast(i);
+    }
+
+    private void handleTransluctentDisplayPreferenceChange(boolean checked) {
+	Intent i = new Intent("serajr.blurred.system.ui.lp.UPDATE_PREFERENCES");
+        Settings.System.putInt(
                 getContentResolver(), Settings.System.TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY, (checked ? 1 : 0));
         Settings.System.putInt(
-                getContentResolver(), Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, (checked ? 1 : 0));
+                getContentResolver(), Settings.System.TRANSLUCENT_QUICK_SETTINGS_PREFERENCE_KEY, (checked ? 1 : 0));
+        Settings.System.putInt(
+                getContentResolver(), Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, (checked ? 1 : 0));
 	getContext().sendBroadcast(i);
     }
 
@@ -342,6 +358,10 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
 	// Blur Display
 	mBlurDisplayPreference = (SwitchPreference) findPreference(BLUR_DISPLAY_PREFERENCE);
         mBlurDisplayPreference.setOnPreferenceChangeListener(this);
+
+	// Transluctent Display
+	mTransluctentDisplayPreference = (SwitchPreference) findPreference(TRANSLUCTENT_DISPLAY_PREFERENCE);
+        mTransluctentDisplayPreference.setOnPreferenceChangeListener(this);
 
         // Display inversion.
         mToggleInversionPreference = (SwitchPreference) findPreference(TOGGLE_INVERSION_PREFERENCE);
@@ -518,16 +538,19 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
         mToggleInversionPreference.setChecked(Settings.Secure.getInt(getContentResolver(),
                 Settings.Secure.ACCESSIBILITY_DISPLAY_INVERSION_ENABLED, 0) == 1);
 
+	// Blur display
         mBlurDisplayPreference.setChecked(Settings.System.getInt(getContentResolver(),
                 Settings.System.STATUS_BAR_EXPANDED_ENABLED_PREFERENCE_KEY, 1) == 1);
         mBlurDisplayPreference.setChecked(Settings.System.getInt(getContentResolver(),
-                Settings.System.TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY, 1) == 1);
-        mBlurDisplayPreference.setChecked(Settings.System.getInt(getContentResolver(),
-                Settings.System.TRANSLUCENT_QUICK_SETTINGS_PREFERENCE_KEY, 0) == 1);
-        mBlurDisplayPreference.setChecked(Settings.System.getInt(getContentResolver(),
-                Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 0) == 1);
-        mBlurDisplayPreference.setChecked(Settings.System.getInt(getContentResolver(),
                 Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, 1) == 1);
+
+	// Transluctent display
+        mTransluctentDisplayPreference.setChecked(Settings.System.getInt(getContentResolver(),
+                Settings.System.TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY, 1) == 1);
+        mTransluctentDisplayPreference.setChecked(Settings.System.getInt(getContentResolver(),
+                Settings.System.TRANSLUCENT_QUICK_SETTINGS_PREFERENCE_KEY, 1) == 1);
+        mTransluctentDisplayPreference.setChecked(Settings.System.getInt(getContentResolver(),
+                Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 1) == 1);
 
         // Speak passwords.
         final boolean speakPasswordEnabled = Settings.Secure.getInt(getContentResolver(),

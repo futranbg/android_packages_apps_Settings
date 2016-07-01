@@ -87,6 +87,11 @@
             android:title="@string/blur_system_title"
             android:summary="@string/blur_system_summary"
             android:persistent="false" />
+        <SwitchPreference
+            android:key="transluctent_system_preference"
+            android:title="@string/transluctent_system_title"
+            android:summary="@string/transluctent_system_summary"
+            android:persistent="false" />
     </PreferenceCategory>
 
     <PreferenceCategory

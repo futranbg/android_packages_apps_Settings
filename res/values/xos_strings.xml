@@ -158,4 +158,8 @@
 	<!-- Statusbar custom header -->
 	<string name="status_bar_custom_header_title">Contextual Header</string>
 	<string name="status_bar_custom_header_summary">Notification header changes depending on the time of the day</string>
+
+	<!-- Transluctent Display -->
+	<string name="transluctent_system_title">Transluctent Display</string>
+	<string name="transluctent_system_summary">Display transluctent effect over the system</string>
 </resources>
