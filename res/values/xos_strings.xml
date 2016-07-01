@@ -154,4 +154,8 @@
 
 	<!-- Noun, menu item used to remove a gesture -->
 	<string name="header_category_sound">Sounds &amp; Notifications</string>
+
+	<!-- Statusbar custom header -->
+	<string name="status_bar_custom_header_title">Contextual Header</string>
+	<string name="status_bar_custom_header_summary">Notification header changes depending on the time of the day</string>
 </resources>
