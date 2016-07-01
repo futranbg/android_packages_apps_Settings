@@ -60,6 +60,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import cyanogenmod.providers.CMSettings;
+
 /**
  * Activity with the accessibility settings.
  */
@@ -260,6 +262,8 @@ public class AccessibilitySettings extends SettingsPreferenceFragment implements
                 getContentResolver(), Settings.System.STATUS_BAR_EXPANDED_ENABLED_PREFERENCE_KEY, (checked ? 1 : 0));
         Settings.System.putInt(
                 getContentResolver(), Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, (checked ? 1 : 0));
+	CMSettings.System.putInt(
+                getContentResolver(), CMSettings.System.STATUSBAR_BLUR_RADIUS, 18);
 	getContext().sendBroadcast(i);
     }
 
