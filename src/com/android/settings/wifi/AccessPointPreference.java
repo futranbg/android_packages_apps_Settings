@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007 The Android Open Source Project
+ * Copyright (C) 2015 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,96 +13,232 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.android.settings.wifi;
 
-import com.android.settings.R;
-
-import android.net.wifi.WifiManager;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
+import android.net.wifi.WifiConfiguration;
+import android.os.Looper;
+import android.os.UserHandle;
 import android.preference.Preference;
+import android.text.TextUtils;
+import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.TextView;
 
-public class AccessPointPreference extends Preference implements
-        AccessPointState.AccessPointStateCallback {
-    
-    // UI states
-    private static final int[] STATE_ENCRYPTED = { R.attr.state_encrypted };
-    private static final int[] STATE_EMPTY = { };
-    
-    // Signal strength indicator
-    private static final int UI_SIGNAL_LEVELS = 4;
+import com.android.settings.R;
+import com.android.settingslib.wifi.AccessPoint;
 
-    private WifiSettings mWifiSettings;
-    
-    private AccessPointState mState;
+public class AccessPointPreference extends Preference {
 
-    public AccessPointPreference(WifiSettings wifiSettings, AccessPointState state) {
-        super(wifiSettings, null);
-        
-        mWifiSettings = wifiSettings;
-        mState = state;
-        
-        setWidgetLayoutResource(R.layout.preference_widget_wifi_signal);
-        
-        state.setCallback(this);
-        
+    private static final int[] STATE_SECURED = {
+        R.attr.state_encrypted
+    };
+    private static final int[] STATE_NONE = {};
+
+    private static int[] wifi_signal_attributes = { R.attr.wifi_signal };
+    private static int[] wifi_no_signal_attributes = { R.attr.wifi_no_signal };
+
+    private final StateListDrawable mWifiSld;
+    private final int mBadgePadding;
+    private final UserBadgeCache mBadgeCache;
+
+    private TextView mTitleView;
+    private boolean mForSavedNetworks = false;
+    private AccessPoint mAccessPoint;
+    private Drawable mBadge;
+    private int mLevel;
+    private CharSequence mContentDescription;
+
+    private boolean mShowNoSignalIcon;
+    private boolean mNoSignalLoaded;
+
+    static final int[] WIFI_CONNECTION_STRENGTH = {
+        R.string.accessibility_wifi_one_bar,
+        R.string.accessibility_wifi_two_bars,
+        R.string.accessibility_wifi_three_bars,
+        R.string.accessibility_wifi_signal_full
+    };
+
+    // Used for dummy pref.
+    public AccessPointPreference(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        mWifiSld = null;
+        mBadgePadding = 0;
+        mBadgeCache = null;
+    }
+
+    public AccessPointPreference(AccessPoint accessPoint, Context context, UserBadgeCache cache,
+                                 boolean forSavedNetworks, boolean showNoSignal) {
+        super(context);
+        mBadgeCache = cache;
+        mAccessPoint = accessPoint;
+        mForSavedNetworks = forSavedNetworks;
+        mAccessPoint.setTag(this);
+        mLevel = -1;
+
+        mWifiSld = (StateListDrawable) context.getTheme()
+                .obtainStyledAttributes(wifi_signal_attributes).getDrawable(0);
+
+        // Distance from the end of the title at which this AP's user badge should sit.
+        mBadgePadding = context.getResources()
+                .getDimensionPixelSize(R.dimen.wifi_preference_badge_padding);
+        mShowNoSignalIcon = showNoSignal;
         refresh();
     }
-    
-    public void refresh() {
-        setTitle(mState.getHumanReadableSsid());
-        setSummary(mState.getSummarizedStatus());
 
-        notifyChanged();
-    }
-    
-    public void refreshAccessPointState() {
-        refresh();
-        
-        // The ordering of access points could have changed due to the state change, so
-        // re-evaluate ordering
-        notifyHierarchyChanged();
+    public AccessPoint getAccessPoint() {
+        return mAccessPoint;
     }
 
     @Override
     protected void onBindView(View view) {
         super.onBindView(view);
+        if (mAccessPoint == null) {
+            // Used for dummy pref.
+            return;
+        }
+        Drawable drawable = getIcon();
+        if (drawable != null) {
+            drawable.setLevel(mLevel);
+        }
 
-        ImageView signal = (ImageView) view.findViewById(R.id.signal);
-        if (mState.seen) {
-            signal.setImageResource(R.drawable.wifi_signal);
-            signal.setImageState(mState.hasSecurity() ? STATE_ENCRYPTED : STATE_EMPTY, true);
-            signal.setImageLevel(getUiSignalLevel());
+        mTitleView = (TextView) view.findViewById(com.android.internal.R.id.title);
+        if (mTitleView != null) {
+            // Attach to the end of the title view
+            mTitleView.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, mBadge, null);
+            mTitleView.setCompoundDrawablePadding(mBadgePadding);
+        }
+        view.setContentDescription(mContentDescription);
+    }
+
+    protected void updateIcon(int level, Context context) {
+        if (level == -1) {
+            if (mShowNoSignalIcon) {
+                Drawable drawable = getIcon();
+                if (drawable == null || !mNoSignalLoaded) {
+                    StateListDrawable sld = (StateListDrawable) context.getTheme()
+                            .obtainStyledAttributes(wifi_no_signal_attributes).getDrawable(0);
+                    if (sld != null) {
+                        sld.setState((getAccessPoint().getSecurity() != AccessPoint.SECURITY_NONE)
+                                ? STATE_SECURED : STATE_NONE);
+                        setIcon(sld.getCurrent());
+                        mNoSignalLoaded = true;
+                    }
+                }
+            }
+            if (!mNoSignalLoaded) {
+                setIcon(null);
+            }
         } else {
-            signal.setImageDrawable(null);
+            if (getIcon() == null || mNoSignalLoaded) {
+                // To avoid a drawing race condition, we first set the state (SECURE/NONE) and then
+                // set the icon (drawable) to that state's drawable.
+                // If sld is null then we are indexing and therefore do not have access to
+                // (nor need to display) the drawable.
+                if (mWifiSld != null) {
+                    mWifiSld.setState((mAccessPoint.getSecurity() != AccessPoint.SECURITY_NONE)
+                            ? STATE_SECURED
+                            : STATE_NONE);
+                    Drawable drawable = mWifiSld.getCurrent();
+                    if (!mForSavedNetworks || mShowNoSignalIcon) {
+                        setIcon(drawable);
+                    } else {
+                        setIcon(null);
+                    }
+                }
+            }
         }
     }
 
-    private int getUiSignalLevel() {
-        return mState != null ? WifiManager.calculateSignalLevel(mState.signal, UI_SIGNAL_LEVELS)
-                : 0; 
+    protected void updateBadge(Context context) {
+        WifiConfiguration config = mAccessPoint.getConfig();
+        if (config != null) {
+            // Fetch badge (may be null)
+            // Get the badge using a cache since the PM will ask the UserManager for the list
+            // of profiles every time otherwise.
+            mBadge = mBadgeCache.getUserBadge(config.creatorUid);
+        }
     }
 
     /**
-     * Returns the {@link AccessPointState} associated with this preference.
-     * @return The {@link AccessPointState}.
+     * Updates the title and summary; may indirectly call notifyChanged().
      */
-    public AccessPointState getAccessPointState() {
-        return mState;
-    }
-    
-    @Override
-    public int compareTo(Preference another) {
-        if (!(another instanceof AccessPointPreference)) {
-            // Let normal preferences go before us.
-            // NOTE: we should only be compared to Preference in our
-            //       category.
-            return 1;
+    public void refresh() {
+        if (mForSavedNetworks) {
+            setTitle(mAccessPoint.getConfigName());
+        } else {
+            setTitle(mAccessPoint.getSsid());
         }
-        
-        return mState.compareTo(((AccessPointPreference) another).mState);
-    }
-    
-}
 
+        final Context context = getContext();
+        int level = mAccessPoint.getLevel();
+        if (level != mLevel || mShowNoSignalIcon) {
+            mLevel = level;
+            updateIcon(mLevel, context);
+            notifyChanged();
+        }
+        updateBadge(context);
+
+        setSummary(mForSavedNetworks ? mAccessPoint.getSavedNetworkSummary()
+                : mAccessPoint.getSettingsSummary());
+
+        mContentDescription = getTitle();
+        if (getSummary() != null) {
+            mContentDescription = TextUtils.concat(mContentDescription, ",", getSummary());
+        }
+        if (level >= 0 && level < WIFI_CONNECTION_STRENGTH.length) {
+            mContentDescription = TextUtils.concat(mContentDescription, ",",
+                    getContext().getString(WIFI_CONNECTION_STRENGTH[level]));
+        }
+    }
+
+    @Override
+    protected void notifyChanged() {
+        if (Looper.getMainLooper() != Looper.myLooper()) {
+            // Let our BG thread callbacks call setTitle/setSummary.
+            postNotifyChanged();
+        } else {
+            super.notifyChanged();
+        }
+    }
+
+    public void onLevelChanged() {
+        postNotifyChanged();
+    }
+
+    private void postNotifyChanged() {
+        if (mTitleView != null) {
+            mTitleView.post(mNotifyChanged);
+        } // Otherwise we haven't been bound yet, and don't need to update.
+    }
+
+    private final Runnable mNotifyChanged = new Runnable() {
+        @Override
+        public void run() {
+            notifyChanged();
+        }
+    };
+
+    public static class UserBadgeCache {
+        private final SparseArray<Drawable> mBadges = new SparseArray<>();
+        private final PackageManager mPm;
+
+        UserBadgeCache(PackageManager pm) {
+            mPm = pm;
+        }
+
+        private Drawable getUserBadge(int userId) {
+            int index = mBadges.indexOfKey(userId);
+            if (index < 0) {
+                Drawable badge = mPm.getUserBadgeForDensity(new UserHandle(userId), 0 /* dpi */);
+                mBadges.put(userId, badge);
+                return badge;
+            }
+            return mBadges.valueAt(index);
+        }
+    }
+}

@@ -14,10 +14,8 @@
      limitations under the License.
 -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <PreferenceCategory
-            android:title="@string/testing" />
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="@string/testing" >
             
     <PreferenceScreen
             android:title="@string/testing_phone_info">
@@ -25,12 +23,20 @@
                 android:targetPackage="com.android.settings"
                 android:targetClass="com.android.settings.RadioInfo" />
     </PreferenceScreen>
-        
+
     <PreferenceScreen
-            android:title="@string/testing_battery_info">
+            android:title="@string/testing_usage_stats">
         <intent android:action="android.intent.action.MAIN"
                 android:targetPackage="com.android.settings"
-                android:targetClass="com.android.settings.BatteryInfo" />
+                android:targetClass="com.android.settings.UsageStatsActivity" />
+    </PreferenceScreen>
+
+    <PreferenceScreen
+            android:title="@string/testing_wifi_info" >
+        <intent
+                android:action="android.intent.action.MAIN"
+                android:targetPackage="com.android.settings"
+                android:targetClass="com.android.settings.wifi.WifiInfo" />
     </PreferenceScreen>
 
     <!--    
